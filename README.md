@@ -2,7 +2,7 @@
 #### An Astrophysics game embedded with Reinforcement Learning.
 
 ## Objective:
-- Maximize orbit time
+- Maximize orbit laps
 
 ## Control:
 - Trust toward sun
