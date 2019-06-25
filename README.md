@@ -1,15 +1,15 @@
 # Orbital
-An Astrophysics game embedded with Reinforcement Learning.
+#### An Astrophysics game embedded with Reinforcement Learning.
 
-Objective:
+## Objective:
 - Maximize orbit time
 
-Control:
+## Control:
 - Trust toward sun
 - Thrust away from sun
 
-Constraints:
-1) Stay within bounds of game window
-2) Do not hit the sun
-3) Do not hit the astroids
-4) Do not run out of fuel
+## Constraints:
+- Stay within bounds of game window
+- Do not hit the sun
+- Do not hit the astroids
+- Do not run out of fuel
