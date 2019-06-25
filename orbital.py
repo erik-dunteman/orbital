@@ -5,9 +5,9 @@ import pygame
 from pygame.locals import *
 
 from physics import accelerate, bounce
-from map import setup_map, check_quadrant
+from map import setup_map, check_quadrant, random_astroid
 
-from classes import Agent, Sun
+from classes import Agent, Sun, Astroid
 
 #__________________________________
 #__________________________________
@@ -51,6 +51,8 @@ clock = pygame.time.Clock()
 
 # Set up Map
 agent, sun = setup_map(width, height)
+astroids = [random_astroid(width,height)]
+
 
 
 #__________________________________
@@ -67,12 +69,21 @@ while not done:
 	agent.x += agent.v_x
 	agent.y += agent.v_y
 
+	# Move any astroids:
+	for astroid in astroids:
+		astroid = accelerate(astroid, sun)
+		astroid.x += astroid.v_x
+		astroid.y += astroid.v_y
+
+
 	# Increment score per orbit (threashold directly below sun)
 	print(quad)
 	new_quad = check_quadrant(agent.x, agent.y, sun.x, sun.y)
 	if new_quad == 3 and quad == 4:
 		# Then it has passed a lap below the sun
 		score += 1
+		if score % 1 == 0:
+			astroids.append(random_astroid(width,height))
 	quad = new_quad
 
 	# Check User Input
@@ -116,6 +127,9 @@ while not done:
 	pygame.draw.circle(win, WHITE, 
 		[int(agent.x), int(agent.y)], int(20*agent.m), 0)
 	pygame.draw.circle(win, RED, [sun.x,sun.y], 50, 0)
+	for astroid in astroids:
+		pygame.draw.circle(win, RED, 
+		[int(astroid.x), int(astroid.y)], int(20*astroid.m), 0)
 	
 	if thrust == "UP":
 		# Draw a thrust flame toward sun
@@ -163,7 +177,7 @@ while not done:
 		win.fill(BLACK)
 		textsurface = myfont.render("Score: " + str(score), False, WHITE)
 		win.blit(textsurface, (5,5))
-		fail_note = myfont.render("FAILED", False, WHITE)
+		fail_note = pygame.font.SysFont('Comic Sans MS', 100).render("FAILED", False, WHITE)
 		win.blit(fail_note, (width/2,height/2))
 		pygame.display.flip()
 
@@ -173,6 +187,7 @@ while not done:
 			
 			# Set up Map
 			agent, sun = setup_map(width, height)
+			astroids = []
 
 			# Reset Operating Variables
 			fuel = 500

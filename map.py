@@ -1,5 +1,5 @@
 import random
-from classes import Agent, Sun
+from classes import Agent, Sun, Astroid
 
 def setup_map(width, height):
 	# Initial Agent Positioning & Motion
@@ -9,7 +9,7 @@ def setup_map(width, height):
 	v_y = v_y_start = -4
 
 	# Initial Agent Mass
-	m = random.randint(2, 8) / 10
+	m = random.randint(2, 5) / 10
 
 	# Initial Sun Positioning
 	x_sun = random.randint(int(width/5),int(4*width/5))
@@ -19,6 +19,16 @@ def setup_map(width, height):
 	sun = Sun(10, x_sun, y_sun)
 
 	return(agent,sun)
+
+def random_astroid(width, height):
+	#Create an astroid
+	x = x_start = 500
+	y = y_start = height
+	v_x = v_x_start = random.randint(-8,8)
+	v_y = v_y_start = random.randint(-10,0)
+	m = random.randint(2, 8) / 10
+	astroid = Astroid(m, x, y, v_x, v_y)
+	return astroid
 
 def check_quadrant(x,y,x_sun,y_sun):
 	# Where top right is zero, and 
