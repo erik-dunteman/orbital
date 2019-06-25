@@ -2,7 +2,11 @@
 An Astrophysics game embedded with Reinforcement Learning.
 
 Objective:
-- Maximize orbit time.
+- Maximize orbit time
+
+Control:
+- Trust toward sun
+- Thrust away from sun
 
 Constraints:
 1) Stay within bounds of game window
