@@ -7,12 +7,13 @@ import math
 
 from physics import accelerate, bounce
 from map import setup_map, check_quadrant, random_astroid
-from rl_utils import observe, act, init_Qtable
+from rl_utils import observe, get_action, get_state, init_Qtable, update_Qtable
 from db_utils import write
 from classes import Agent, Sun, Astroid
 
 
-def run(controller, frame_reward, lap_reward, wall_reward):
+def run(controller, statespace, alpha, gamma, epsilon, 
+	frame_reward, lap_reward, wall_reward):
 #__________________________________
 #__________________________________
 # Game Global Variables
@@ -30,7 +31,7 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 	# Operating Variables
 	score = 0
 	agent_score = 0
-	fuel = 500
+	fuel = 200
 	quad = 3
 	done = False # This holds the game in a loop
 	fail = False # This navigates to the fail screen
@@ -38,11 +39,13 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 
 	# Log Variables for Reinforcement Learning
 	observation = [None, None, None, None, None, None]
+	pre_action_state = None
 	reward = 0
 	episode = 1
 
 	# Global Variables for Reinforcement Learning
-	q_table = init_Qtable()
+	if controller == "Agent":
+		q_table = init_Qtable(statespace)
 
 #__________________________________
 #__________________________________
@@ -77,38 +80,16 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 		# Set default variables
 		thrust = "None"
 
-		# Set reward for frame
-		reward = frame_reward
+	#__________________________________
+	#__________________________________
+	# Observe pre_action_state
+		if controller == "Agent" and pre_action_state == None:
+			observation = observe(agent, sun, fuel, width, height)
+			pre_action_state = get_state(observation, statespace)
 
-		# Move the circle
-		agent = accelerate(agent, sun)
-		agent.x += agent.v_x
-		agent.y += agent.v_y
-
-		# Move any astroids:
-		# for astroid in astroids:
-		# 	astroid = accelerate(astroid, sun)
-		# 	astroid.x += astroid.v_x
-		# 	astroid.y += astroid.v_y
-
-
-		# Increment score per orbit (threashold directly below sun)
-		new_quad = check_quadrant(agent.x, agent.y, sun.x, sun.y)
-		if new_quad == 3 and quad == 4:
-			# Then it has passed a lap below the sun
-			score += 1
-			# Reward it!
-			reward = lap_reward
-			# if score % 1 == 0:
-			# 	astroids.append(random_astroid(width,height))
-		quad = new_quad
-
-		# Add score
-		agent_score += reward
-
-#__________________________________
-#__________________________________
-# Environment Interaction	
+	#__________________________________
+	#__________________________________
+	# Get Action	
 		
 		# Give User [X] override ability to kill game
 		for event in pygame.event.get():
@@ -116,7 +97,6 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 					done = True
 					pygame.quit()
 					sys.exit()
-
 
 		action = None
 
@@ -133,8 +113,11 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 				action = "DOWN"
 		
 		else: #The Agent is in control
-			action, q_table = act("Random", q_table)
+			action = get_action(q_table, pre_action_state, epsilon)
 
+	#__________________________________
+	#__________________________________
+	# Perform Action
 
 		if action == "UP":
 			agent = bounce("UP", agent, sun)
@@ -145,21 +128,84 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 			thrust = "DOWN"
 			fuel -= 1
 
+		# Move the circle
+		agent = accelerate(agent, sun)
+		agent.x += agent.v_x
+		agent.y += agent.v_y
+
+
+	#__________________________________
+	#__________________________________
+	# Observe post_action_state and reward
+
+		# Set reward for frame
+		reward = frame_reward
+
+		# Update reward if orbit
+		# Increment score per orbit (threashold directly below sun)
+		new_quad = check_quadrant(agent.x, agent.y, sun.x, sun.y)
+		if new_quad == 3 and quad == 4:
+			# Then it has passed a lap below the sun
+			score += 1
+			# Reward it!
+			reward = lap_reward
+			# if score % 1 == 0:
+			# 	astroids.append(random_astroid(width,height))
+		quad = new_quad
+
+		# Update reward if out-of-bounds
+		if agent.x < 0 or agent.x > width or agent.y < 0 or agent.y > height or fuel <= 0:
+			reward = wall_reward
+			# observation = observe(agent, sun, fuel, width, height)
+			# write(episode, observation, reward)
+			fail = True
+
+		# Add reward to cumulative score (for display purposes)
+		agent_score += reward
+
+		# Observe post_action_state
+		if controller == "Agent":
+			observation = observe(agent, sun, fuel, width, height)
+			post_action_state = get_state(observation, statespace)
+
+
+	#__________________________________
+	#__________________________________
+	# Update Q Table
+		q_table = update_Qtable(q_table, pre_action_state, post_action_state,
+			alpha, gamma)
+
+	#__________________________________
+	#__________________________________
+	# Update state
+		pre_action_state = post_action_state
+
+
+
+
 #__________________________________
 #__________________________________
 # Observation and Reward Logging
 		
-		observation = observe(agent, sun, fuel, width, height)
 
-		print('{:<15s}{:<15s}{:<20s}{:<15s}{:<15s}{:<15s}'.format("V_x: " + str(observation[0]), 
-			"V_y: " + str(observation[1]), 
-			"Radius: " + str(observation[2]), 
-			"To Wall: " + str(observation[3]), 
-			"Mass: " + str(observation[4]), 
-			"Fuel: " + str(observation[5])))
+		# print('{:<15s}{:<15s}{:<20s}{:<15s}{:<15s}{:<15s}'.format("V_x: " + str(observation[0]), 
+		# 	"V_y: " + str(observation[1]), 
+		# 	"Radius: " + str(observation[2]), 
+		# 	"To Wall: " + str(observation[3]), 
+		# 	"Mass: " + str(observation[4]), 
+		# 	"Fuel: " + str(observation[5])))
 
-		write(episode, observation, reward)
+		# write(episode, observation, reward)
 
+#__________________________________
+#__________________________________
+# Update Environment
+
+		# Move any astroids:
+		# for astroid in astroids:
+		# 	astroid = accelerate(astroid, sun)
+		# 	astroid.x += astroid.v_x
+		# 	astroid.y += astroid.v_y
 
 #__________________________________
 #__________________________________
@@ -168,9 +214,11 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 		# The Game Window
 		win.fill(BLACK)
 		scoretext = myfont.render("Score: " + str(score), False, WHITE)
-		win.blit(scoretext, (5,5))
-		scoretext = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
 		win.blit(scoretext, (5,50))
+		scoretext = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
+		win.blit(scoretext, (5,30))
+		episodetext = myfont.render("Episode: " + str(episode), False, WHITE)
+		win.blit(episodetext, (5,10))
 		fueltext = myfont.render("Fuel: " + str(fuel), False, WHITE)
 		win.blit(fueltext, (5,100))
 		pygame.draw.rect(win, GREEN,(10, 150, 30, fuel))
@@ -209,16 +257,8 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 #__________________________________
 # Clean Up
 
-		# Set Game Failure Conditions
-		if agent.x < 0 or agent.x > width or agent.y < 0 or agent.y > height or fuel <= 0:
-			reward = wall_reward
-			agent_score += reward
-			observation = observe(agent, sun, fuel, width, height)
-			write(episode, observation, reward)
-			fail = True
-
 		# Limit while loop
-		clock.tick(80)
+		clock.tick(50)
 
 #__________________________________
 #__________________________________
@@ -245,14 +285,14 @@ def run(controller, frame_reward, lap_reward, wall_reward):
 
 			# Check to see if agent wants new game
 			pressed = pygame.key.get_pressed()
-			if pressed[pygame.K_SPACE]:
-				
+			if pressed[pygame.K_SPACE] or controller == "Agent":
+
 				# Set up Map
 				agent, sun = setup_map(width, height)
 				astroids = []
 
 				# Reset Operating Variables
-				fuel = 500
+				fuel = 200
 				score = 0
 				quad = 3
 
