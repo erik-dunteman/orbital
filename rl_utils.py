@@ -82,22 +82,28 @@ def get_action(q_table, state, epsilon):
 	rand = random.randint(0,100)
 	if rand <= epsilon*100:
 		print("Random")
-		action = random.randint(1,3)
+		action = random.randint(0,2)
 
 	print("State: " + str(state) + "    Action_Vals: " + str(action_vals) + "    Action: " + str(action))
-
-	if action == 0:
-		action = None
-	elif action == 1:
-		action = "UP"
-	elif action == 2:
-		action = "DOWN"
 
 	return action
 
 
-def update_Qtable(q_table, pre_action_state, post_action_state,
+def update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
 			alpha, gamma):
+
+	action_vals_future = q_table[post_action_state[0], 
+	post_action_state[1], post_action_state[2], 
+	post_action_state[3], post_action_state[4], 
+	post_action_state[5]]
+
+	Q_s1_a1 = int(max(action_vals_future))
+
+	Q_s0_a0 = reward + gamma*(Q_s1_a1)
+	q_table[pre_action_state[0], 
+	pre_action_state[1], pre_action_state[2], 
+	pre_action_state[3], pre_action_state[4], 
+	pre_action_state[5], action]
 
 	return q_table
 	
@@ -164,7 +170,12 @@ def init_Qtable(statespace):
 	return q_table
 
 
+def save_Qtable(q_table):
+	np.save("q_tiny.npy", q_table)
 
+def load_Qtable():
+	print("Loading Q-Table")
+	return np.load("q_tiny.npy")
 
 def smooth_Qtable(q_table):
 	''' 

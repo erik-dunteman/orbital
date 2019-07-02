@@ -7,7 +7,7 @@ import math
 
 from physics import accelerate, bounce
 from map import setup_map, check_quadrant, random_astroid
-from rl_utils import observe, get_action, get_state, init_Qtable, update_Qtable
+from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable
 from db_utils import write
 from classes import Agent, Sun, Astroid
 
@@ -45,7 +45,10 @@ def run(controller, statespace, alpha, gamma, epsilon,
 
 	# Global Variables for Reinforcement Learning
 	if controller == "Agent":
-		q_table = init_Qtable(statespace)
+		try:
+			q_table = load_Qtable()
+		except:
+			q_table = init_Qtable(statespace)
 
 #__________________________________
 #__________________________________
@@ -95,8 +98,8 @@ def run(controller, statespace, alpha, gamma, epsilon,
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					done = True
+					save_Qtable(q_table)
 					pygame.quit()
-					sys.exit()
 
 		action = None
 
@@ -119,11 +122,11 @@ def run(controller, statespace, alpha, gamma, epsilon,
 	#__________________________________
 	# Perform Action
 
-		if action == "UP":
+		if action == 1:
 			agent = bounce("UP", agent, sun)
 			thrust = "UP"
 			fuel -= 1
-		if action == "DOWN":
+		if action == 2:
 			agent = bounce("DOWN", agent, sun)
 			thrust = "DOWN"
 			fuel -= 1
@@ -172,7 +175,7 @@ def run(controller, statespace, alpha, gamma, epsilon,
 	#__________________________________
 	#__________________________________
 	# Update Q Table
-		q_table = update_Qtable(q_table, pre_action_state, post_action_state,
+		q_table = update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
 			alpha, gamma)
 
 	#__________________________________
@@ -258,7 +261,7 @@ def run(controller, statespace, alpha, gamma, epsilon,
 # Clean Up
 
 		# Limit while loop
-		clock.tick(50)
+		# clock.tick(50)
 
 #__________________________________
 #__________________________________
@@ -270,8 +273,8 @@ def run(controller, statespace, alpha, gamma, epsilon,
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					done = True
+					save_Qtable(q_table)
 					pygame.quit()
-					sys.exit()
 
 			# Render window
 			win.fill(BLACK)
