@@ -1,6 +1,33 @@
 import math
 import numpy as np
 import random
+import datetime
+
+def read_logs(statespace, mode):
+	try:
+		file = open("training_logs.txt", "r")
+	except:
+		#If that file does not yet exist
+		file = open("training_logs.txt", "w+")
+	episode = 1
+	for line in file:
+		line.strip("\n")
+		line_list = line.split("\t")
+		if line_list[0] == statespace and line_list[1] == mode:
+			episode = int(line_list[2])
+	return episode
+	file.close()
+
+def save_logs(statespace, mode, episode):
+	timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+	line = statespace + "\t" + mode + "\t" + str(episode) + "\t" + timestamp + "\n"
+	try:
+		with open("training_logs.txt", "a") as file:
+			file.write(line)
+	except:
+		file = open("training_logs.txt", "w+")
+		file.write(line)
+		file.close()
 
 def observe(agent, sun, fuel, width, height):
 	r = math.sqrt((sun.x - agent.x)**2 + (sun.y - agent.y)**2)
@@ -78,6 +105,11 @@ def get_action(q_table, state, epsilon):
 	# Find highest reward action
 	action = action_vals.argmax()
 
+	# Add some degree of randomness based
+	if action_vals[0] == action_vals[1] == action_vals[2]:
+		print("Random")
+		action = random.randint(0,2)
+
 	# Add some degree of randomness based on Epsilon
 	rand = random.randint(0,100)
 	if rand <= epsilon*100:
@@ -100,10 +132,12 @@ def update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
 	Q_s1_a1 = int(max(action_vals_future))
 
 	Q_s0_a0 = reward + gamma*(Q_s1_a1)
+	
+	#Update
 	q_table[pre_action_state[0], 
 	pre_action_state[1], pre_action_state[2], 
 	pre_action_state[3], pre_action_state[4], 
-	pre_action_state[5], action]
+	pre_action_state[5], action] = Q_s0_a0
 
 	return q_table
 	
@@ -167,15 +201,19 @@ def init_Qtable(statespace):
 			Actionspace: 3
 		'''
 		q_table = np.zeros([13,13,6,6,4,2,3])
+
 	return q_table
 
 
-def save_Qtable(q_table):
-	np.save("q_tiny.npy", q_table)
+def save_Qtable(q_table, statespace, mode):
+	file = "Qtables/" + statespace + "_" + mode + ".npy"
+	np.save(file, q_table)
 
-def load_Qtable():
+def load_Qtable(statespace, mode):
 	print("Loading Q-Table")
-	return np.load("q_tiny.npy")
+	file = "Qtables/" + statespace + "_" + mode + ".npy"
+	return np.load(file)
+
 
 def smooth_Qtable(q_table):
 	''' 

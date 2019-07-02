@@ -14,6 +14,8 @@ statespace = "Tiny"
 # statespace = "Small"
 # statespace = "Large"
 # statespace = "LargeSmoothed"
+mode = "NoAstroids"
+# mode = "Astroids"
 
 
 # Agent Rewards
@@ -21,4 +23,4 @@ frame_reward = -1
 lap_reward = 100
 wall_reward = -10000
 
-run(controller, statespace, alpha, gamma, epsilon, frame_reward, lap_reward, wall_reward)
+run(controller, statespace, mode, alpha, gamma, epsilon, frame_reward, lap_reward, wall_reward)

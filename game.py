@@ -7,12 +7,12 @@ import math
 
 from physics import accelerate, bounce
 from map import setup_map, check_quadrant, random_astroid
-from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable
+from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable, save_logs, read_logs
 from db_utils import write
 from classes import Agent, Sun, Astroid
 
 
-def run(controller, statespace, alpha, gamma, epsilon, 
+def run(controller, statespace, mode, alpha, gamma, epsilon, 
 	frame_reward, lap_reward, wall_reward):
 #__________________________________
 #__________________________________
@@ -41,12 +41,13 @@ def run(controller, statespace, alpha, gamma, epsilon,
 	observation = [None, None, None, None, None, None]
 	pre_action_state = None
 	reward = 0
-	episode = 1
+	episode = read_logs(statespace, mode)
+
 
 	# Global Variables for Reinforcement Learning
 	if controller == "Agent":
 		try:
-			q_table = load_Qtable()
+			q_table = load_Qtable(statespace, mode)
 		except:
 			q_table = init_Qtable(statespace)
 
@@ -98,7 +99,8 @@ def run(controller, statespace, alpha, gamma, epsilon,
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					done = True
-					save_Qtable(q_table)
+					save_Qtable(q_table, statespace, mode)
+					save_logs(statespace, mode, episode)
 					pygame.quit()
 
 		action = None
@@ -273,7 +275,8 @@ def run(controller, statespace, alpha, gamma, epsilon,
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					done = True
-					save_Qtable(q_table)
+					save_Qtable(q_table, statespace, mode)
+					save_logs(statespace, mode, episode)
 					pygame.quit()
 
 			# Render window
