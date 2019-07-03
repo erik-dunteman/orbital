@@ -29,6 +29,17 @@ def save_logs(statespace, mode, episode):
 		file.write(line)
 		file.close()
 
+def track_reward(statespace, mode, episode, reward):
+	name = "Curves/learning_curve_" + statespace + "_" + mode + '.csv'
+	line = str(episode) + "," + str(reward) + '\n'
+	try:
+		with open(name, "a") as file:
+			file.write(line)
+	except:
+		file = open(name, "w+")
+		file.write(line)
+		file.close()
+
 def observe(agent, sun, fuel, width, height):
 	r = math.sqrt((sun.x - agent.x)**2 + (sun.y - agent.y)**2)
 	wall_dist = min(agent.x, agent.y, width - agent.x, height - agent.y)

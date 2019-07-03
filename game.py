@@ -7,7 +7,7 @@ import math
 
 from physics import accelerate, bounce
 from map import setup_map, check_quadrant, random_astroid
-from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable, save_logs, read_logs
+from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable, save_logs, read_logs, track_reward
 from db_utils import write
 from classes import Agent, Sun, Astroid
 
@@ -288,6 +288,10 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 			fail_note = pygame.font.SysFont('Comic Sans MS', 100).render("FAILED", False, WHITE)
 			win.blit(fail_note, (width/2,height/2))
 			pygame.display.flip()
+
+			# Save that Episode's reward
+			if controller == "Agent":
+				track_reward(statespace, mode, episode, agent_score)
 
 			# Check to see if agent wants new game
 			pressed = pygame.key.get_pressed()
