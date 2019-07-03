@@ -7,7 +7,7 @@ import math
 
 from physics import accelerate, bounce
 from map import setup_map, check_quadrant, random_astroid
-from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable, save_logs, read_logs, track_reward
+from rl_utils import observe, get_action, get_state, load_Qtable, init_Qtable, update_Qtable, save_Qtable, save_logs, read_logs, track_stats
 from db_utils import write
 from classes import Agent, Sun, Astroid
 
@@ -50,6 +50,10 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 			q_table = load_Qtable(statespace, mode)
 		except:
 			q_table = init_Qtable(statespace)
+
+		# Variables for counting the amount of frames per episode where the agent is acting "blindly"
+		blind_frames = 0
+		episode_frames = 0
 
 #__________________________________
 #__________________________________
@@ -118,7 +122,7 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 				action = "DOWN"
 		
 		else: #The Agent is in control
-			action = get_action(q_table, pre_action_state, epsilon)
+			action, blind_frames = get_action(q_table, pre_action_state, epsilon, blind_frames)
 
 	#__________________________________
 	#__________________________________
@@ -260,10 +264,13 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 
 #__________________________________
 #__________________________________
-# Clean Up
+# Frame End Functions (Cleanup)
 
 		# Limit while loop
 		# clock.tick(50)
+
+		# Increment frames per episode
+		episode_frames += 1
 
 #__________________________________
 #__________________________________
@@ -289,9 +296,10 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 			win.blit(fail_note, (width/2,height/2))
 			pygame.display.flip()
 
-			# Save that Episode's reward
+			# Save that Episode's stats
 			if controller == "Agent":
-				track_reward(statespace, mode, episode, agent_score)
+				blind_fraction = round(blind_frames/episode_frames, 5)
+				track_stats(statespace, mode, episode, agent_score, blind_fraction)
 
 			# Check to see if agent wants new game
 			pressed = pygame.key.get_pressed()
@@ -308,6 +316,12 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 
 				# Reset Agent Score
 				agent_score = 0
+
+				# Reset Frames per Episode
+				episode_frames = 0
+
+				# Reset Blind Frames per Episode
+				blind_frames = 0
 
 				# Increment Episode
 				episode += 1

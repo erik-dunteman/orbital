@@ -29,9 +29,9 @@ def save_logs(statespace, mode, episode):
 		file.write(line)
 		file.close()
 
-def track_reward(statespace, mode, episode, reward):
+def track_stats(statespace, mode, episode, reward, blind_fraction):
 	name = "Curves/learning_curve_" + statespace + "_" + mode + '.csv'
-	line = str(episode) + "," + str(reward) + '\n'
+	line = str(episode) + "," + str(reward) + '\t'+ str(blind_fraction) + '\n'
 	try:
 		with open(name, "a") as file:
 			file.write(line)
@@ -109,15 +109,16 @@ def get_state(observation, statespace):
 
 
 
-def get_action(q_table, state, epsilon):
+def get_action(q_table, state, epsilon, blind_frames):
 	
 	action_vals = q_table[state[0], state[1], state[2], state[3], state[4], state[5]]
 
 	# Find highest reward action
 	action = action_vals.argmax()
 
-	# Add some degree of randomness based
+	# Account for space that is blind (all equal rewards)
 	if action_vals[0] == action_vals[1] == action_vals[2]:
+		blind_frames += 1
 		print("Random")
 		action = random.randint(0,2)
 
@@ -129,7 +130,7 @@ def get_action(q_table, state, epsilon):
 
 	print("State: " + str(state) + "    Action_Vals: " + str(action_vals) + "    Action: " + str(action))
 
-	return action
+	return action, blind_frames
 
 
 def update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
