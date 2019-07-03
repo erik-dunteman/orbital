@@ -4,6 +4,7 @@ import random
 import datetime
 
 def read_logs(statespace, mode):
+	print("Reading Training Logs for Episode Start Point")
 	try:
 		file = open("training_logs.txt", "r")
 	except:
@@ -14,11 +15,12 @@ def read_logs(statespace, mode):
 		line.strip("\n")
 		line_list = line.split("\t")
 		if line_list[0] == statespace and line_list[1] == mode:
-			episode = int(line_list[2])
+			episode = int(line_list[2]) + 1
 	return episode
 	file.close()
 
 def save_logs(statespace, mode, episode):
+	print("Saving Training Logs")
 	timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
 	line = statespace + "\t" + mode + "\t" + str(episode) + "\t" + timestamp + "\n"
 	try:
@@ -119,16 +121,16 @@ def get_action(q_table, state, epsilon, blind_frames):
 	# Account for space that is blind (all equal rewards)
 	if action_vals[0] == action_vals[1] == action_vals[2]:
 		blind_frames += 1
-		print("Random")
+		# print("Random")
 		action = random.randint(0,2)
 
 	# Add some degree of randomness based on Epsilon
 	rand = random.randint(0,100)
 	if rand <= epsilon*100:
-		print("Random")
+		# print("Random")
 		action = random.randint(0,2)
 
-	print("State: " + str(state) + "    Action_Vals: " + str(action_vals) + "    Action: " + str(action))
+	# print("State: " + str(state) + "    Action_Vals: " + str(action_vals) + "    Action: " + str(action))
 
 	return action, blind_frames
 
@@ -218,6 +220,7 @@ def init_Qtable(statespace):
 
 
 def save_Qtable(q_table, statespace, mode):
+	print("Saving Q Table")
 	file = "Qtables/" + statespace + "_" + mode + ".npy"
 	np.save(file, q_table)
 

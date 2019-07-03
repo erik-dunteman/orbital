@@ -12,8 +12,12 @@ from db_utils import write
 from classes import Agent, Sun, Astroid
 
 
-def run(controller, statespace, mode, alpha, gamma, epsilon, 
+def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon, 
 	frame_reward, lap_reward, wall_reward):
+	print("\nHyperParameters:")
+	print(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon, 
+	frame_reward, lap_reward, wall_reward)
+	print()
 #__________________________________
 #__________________________________
 # Game Global Variables
@@ -41,8 +45,8 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 	observation = [None, None, None, None, None, None]
 	pre_action_state = None
 	reward = 0
-	episode = read_logs(statespace, mode)
-
+	
+	episode = 0
 
 	# Global Variables for Reinforcement Learning
 	if controller == "Agent":
@@ -51,6 +55,9 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 		except:
 			q_table = init_Qtable(statespace)
 
+		episode = read_logs(statespace, mode)
+		episode_session_start = episode
+
 		# Variables for counting the amount of frames per episode where the agent is acting "blindly"
 		blind_frames = 0
 		episode_frames = 0
@@ -58,24 +65,26 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 #__________________________________
 #__________________________________
 # Fire-up
+	if screen == "ScreenOn": 
+		print('Display Setup, as Screen is True')
+		# Set up display
+		bashCommand = 'export DISPLAY=:0'
+		os.system(bashCommand)
+		os.environ['SDL_VIDEODRIVER']='x11'
 
-	# Set up display
-	bashCommand = 'export DISPLAY=:0'
-	os.system(bashCommand)
-	os.environ['SDL_VIDEODRIVER']='x11'
-
-	# Initialize Pygame system
-	pygame.init()
-	pygame.display.init()
-	pygame.display.list_modes()
-	pygame.font.init()
-	myfont = pygame.font.SysFont('Comic Sans MS', 30)
-	win = pygame.display.set_mode((width,height))
-	clock = pygame.time.Clock()
+		# Initialize Pygame system
+		pygame.init()
+		pygame.display.init()
+		pygame.display.list_modes()
+		pygame.font.init()
+		myfont = pygame.font.SysFont('Comic Sans MS', 30)
+		win = pygame.display.set_mode((width,height))
+		clock = pygame.time.Clock()
 
 	# Set up Map
 	agent, sun = setup_map(width, height)
-	# astroids = [random_astroid(width,height)]
+	if mode == "Astroids":
+		astroids = [random_astroid(width,height)]
 
 
 
@@ -90,39 +99,47 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 
 	#__________________________________
 	#__________________________________
+	# Loop break conditions
+		
+		# Give User [X] override ability to kill game
+		if screen == "ScreenOn":
+			for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						done = True
+						if controller == "Agent":
+							save_Qtable(q_table, statespace, mode)
+							save_logs(statespace, mode, episode)
+						pygame.quit()
+
+	#__________________________________
+	#__________________________________
 	# Observe pre_action_state
+
 		if controller == "Agent" and pre_action_state == None:
 			observation = observe(agent, sun, fuel, width, height)
 			pre_action_state = get_state(observation, statespace)
 
-	#__________________________________
-	#__________________________________
-	# Get Action	
 		
-		# Give User [X] override ability to kill game
-		for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					done = True
-					save_Qtable(q_table, statespace, mode)
-					save_logs(statespace, mode, episode)
-					pygame.quit()
+	#__________________________________
+	#__________________________________
+	# Get Action
 
 		action = None
 
-		if controller == "Self": #The User is in control
+		if controller == "Agent": #The Agent is in control
+			action, blind_frames = get_action(q_table, pre_action_state, epsilon, blind_frames)
+		
+		else: #The User is in control
 			# Check User Input
 			pressed = pygame.key.get_pressed()
 			# Respond to Up (Thrust Away From Sun)
 			if pressed[pygame.K_UP]:
 				# print("UP")
-				action = "UP"
+				action = 1
 			# Respond to Down (Thrust Toward Sun)
 			if pressed[pygame.K_DOWN]:
 				# print("DOWN")
-				action = "DOWN"
-		
-		else: #The Agent is in control
-			action, blind_frames = get_action(q_table, pre_action_state, epsilon, blind_frames)
+				action = 2
 
 	#__________________________________
 	#__________________________________
@@ -181,13 +198,13 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 	#__________________________________
 	#__________________________________
 	# Update Q Table
-		q_table = update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
-			alpha, gamma)
+			q_table = update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
+				alpha, gamma)
 
 	#__________________________________
 	#__________________________________
 	# Update state
-		pre_action_state = post_action_state
+			pre_action_state = post_action_state
 
 
 
@@ -219,47 +236,47 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 #__________________________________
 #__________________________________
 # Draw
-		
-		# The Game Window
-		win.fill(BLACK)
-		scoretext = myfont.render("Score: " + str(score), False, WHITE)
-		win.blit(scoretext, (5,50))
-		scoretext = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
-		win.blit(scoretext, (5,30))
-		episodetext = myfont.render("Episode: " + str(episode), False, WHITE)
-		win.blit(episodetext, (5,10))
-		fueltext = myfont.render("Fuel: " + str(fuel), False, WHITE)
-		win.blit(fueltext, (5,100))
-		pygame.draw.rect(win, GREEN,(10, 150, 30, fuel))
-		pygame.draw.rect(win, RED, (0,0,width,height), 5)
+		if screen == "ScreenOn":
+			# The Game Window
+			win.fill(BLACK)
+			scoretext = myfont.render("Score: " + str(score), False, WHITE)
+			win.blit(scoretext, (5,50))
+			scoretext = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
+			win.blit(scoretext, (5,30))
+			episodetext = myfont.render("Episode: " + str(episode), False, WHITE)
+			win.blit(episodetext, (5,10))
+			fueltext = myfont.render("Fuel: " + str(fuel), False, WHITE)
+			win.blit(fueltext, (5,100))
+			pygame.draw.rect(win, GREEN,(10, 150, 30, fuel))
+			pygame.draw.rect(win, RED, (0,0,width,height), 5)
 
 
-		# The Features
-		pygame.draw.circle(win, WHITE, 
-			[int(agent.x), int(agent.y)], int(20*agent.m), 0)
-		v_composite = math.sqrt(agent.v_x**2 + agent.v_y**2)
-		pygame.draw.line(win, GREEN, [int(agent.x), int(agent.y)], 
-			[int(agent.x + (25*agent.v_x)/v_composite), int(agent.y + (25*agent.v_y)/v_composite)], int(20*agent.m))
-		pygame.draw.circle(win, RED, [sun.x,sun.y], 50, 0)
-		# for astroid in astroids:
-		# 	pygame.draw.circle(win, RED, 
-		# 	[int(astroid.x), int(astroid.y)], int(20*astroid.m), 0)
-		
-		if thrust == "UP":
-			# Draw a thrust flame toward sun
-			r = math.sqrt((agent.x-sun.x)**2 + (agent.y-sun.y)**2)
-			pygame.draw.line(win, RED, [int(agent.x), int(agent.y)], 
-			[int(agent.x + (sun.x - agent.x)*50/r), int(agent.y + (sun.y - agent.y)*50/r)], int(10*agent.m))
-		
-		if thrust == "DOWN":
-			# Draw a thrust flame away from sun
-			r = math.sqrt((agent.x-sun.x)**2 + (agent.y-sun.y)**2)
-			pygame.draw.line(win, RED, [int(agent.x), int(agent.y)], 
-			[int(agent.x - (sun.x - agent.x)*50/r), int(agent.y - (sun.y - agent.y)*50/r)], int(10*agent.m))
+			# The Features
+			pygame.draw.circle(win, WHITE, 
+				[int(agent.x), int(agent.y)], int(20*agent.m), 0)
+			v_composite = math.sqrt(agent.v_x**2 + agent.v_y**2)
+			pygame.draw.line(win, GREEN, [int(agent.x), int(agent.y)], 
+				[int(agent.x + (25*agent.v_x)/v_composite), int(agent.y + (25*agent.v_y)/v_composite)], int(20*agent.m))
+			pygame.draw.circle(win, RED, [sun.x,sun.y], 50, 0)
+			# for astroid in astroids:
+			# 	pygame.draw.circle(win, RED, 
+			# 	[int(astroid.x), int(astroid.y)], int(20*astroid.m), 0)
+			
+			if thrust == "UP":
+				# Draw a thrust flame toward sun
+				r = math.sqrt((agent.x-sun.x)**2 + (agent.y-sun.y)**2)
+				pygame.draw.line(win, RED, [int(agent.x), int(agent.y)], 
+				[int(agent.x + (sun.x - agent.x)*50/r), int(agent.y + (sun.y - agent.y)*50/r)], int(10*agent.m))
+			
+			if thrust == "DOWN":
+				# Draw a thrust flame away from sun
+				r = math.sqrt((agent.x-sun.x)**2 + (agent.y-sun.y)**2)
+				pygame.draw.line(win, RED, [int(agent.x), int(agent.y)], 
+				[int(agent.x - (sun.x - agent.x)*50/r), int(agent.y - (sun.y - agent.y)*50/r)], int(10*agent.m))
 
 
-		# Render to Screen
-		pygame.display.flip()
+			# Render to Screen
+			pygame.display.flip()
 
 
 #__________________________________
@@ -267,10 +284,12 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 # Frame End Functions (Cleanup)
 
 		# Limit while loop
-		# clock.tick(50)
+		if controller == "Self":
+			clock.tick(50)
 
 		# Increment frames per episode
-		episode_frames += 1
+		if controller == "Agent":
+			episode_frames += 1
 
 #__________________________________
 #__________________________________
@@ -278,32 +297,50 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 
 		while fail:
 
-			# Listen for exit button
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					done = True
-					save_Qtable(q_table, statespace, mode)
-					save_logs(statespace, mode, episode)
-					pygame.quit()
+			if screen == "ScreenOn":
+				# Listen for exit button
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						done = True
+						if controller == "Agent":
+							save_Qtable(q_table, statespace, mode)
+							save_logs(statespace, mode, episode)
+						pygame.quit()
 
-			# Render window
-			win.fill(BLACK)
-			textsurface = myfont.render("Score: " + str(score), False, WHITE)
-			win.blit(textsurface, (5,5))
-			textsurface = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
-			win.blit(textsurface, (5,50))
-			fail_note = pygame.font.SysFont('Comic Sans MS', 100).render("FAILED", False, WHITE)
-			win.blit(fail_note, (width/2,height/2))
-			pygame.display.flip()
+				# Render window
+				win.fill(BLACK)
+				textsurface = myfont.render("Score: " + str(score), False, WHITE)
+				win.blit(textsurface, (5,5))
+				textsurface = myfont.render("Agent Score: " + str(agent_score), False, WHITE)
+				win.blit(textsurface, (5,50))
+				fail_note = pygame.font.SysFont('Comic Sans MS', 100).render("FAILED", False, WHITE)
+				win.blit(fail_note, (width/2,height/2))
+				pygame.display.flip()
+
 
 			# Save that Episode's stats
 			if controller == "Agent":
+				print("Episode: ", episode)
 				blind_fraction = round(blind_frames/episode_frames, 5)
 				track_stats(statespace, mode, episode, agent_score, blind_fraction)
 
+				# Kill the game if limited training session is done
+				if session_len != None:
+					if episode + 1 - episode_session_start >= session_len:
+						done = True
+						save_Qtable(q_table, statespace, mode)
+						save_logs(statespace, mode, episode)
+
+
+
 			# Check to see if agent wants new game
-			pressed = pygame.key.get_pressed()
-			if pressed[pygame.K_SPACE] or controller == "Agent":
+			if controller == "Self":
+				pressed = pygame.key.get_pressed()
+				pressed_space = pressed[pygame.K_SPACE]
+			else:
+				pressed_space = True
+
+			if pressed_space:
 
 				# Set up Map
 				agent, sun = setup_map(width, height)
@@ -325,6 +362,7 @@ def run(controller, statespace, mode, alpha, gamma, epsilon,
 
 				# Increment Episode
 				episode += 1
+				
 
 				# Kick out of Fail Loop
 				fail = False
