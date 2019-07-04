@@ -1,5 +1,6 @@
-Tiny	NoAstroids	751	02:23PM on July 02, 2019
-Tiny	NoAstroids	4501	04:16PM on July 02, 2019
+Gen1	Flawed Bellman Equation, slow learning rate
+Tiny	NoAstroids	751	02:23PM on July 02, 2019		
+Tiny	NoAstroids	4501	04:16PM, on July 02, 2019
 Tiny	NoAstroids	7360	06:19PM on July 02, 2019
 Tiny	NoAstroids	7363	06:32PM on July 02, 2019
 Tiny	NoAstroids	7530	06:53PM on July 02, 2019
@@ -32,3 +33,17 @@ Tiny	NoAstroids	135962	01:59PM on July 03, 2019
 Tiny	NoAstroids	135972	10:51PM on July 03, 2019
 Tiny	NoAstroids	135982	10:51PM on July 03, 2019
 Tiny	NoAstroids	1135982	11:28PM on July 03, 2019
+_	_	_	_	_	_	_	_	_	_	_	_	_
+Tiny	NoAstroids	0
+Tiny	NoAstroids	100	11:13AM on July 04, 2019
+Tiny	NoAstroids	106	11:17AM on July 04, 2019
+Tiny	NoAstroids	116	11:19AM on July 04, 2019
+Tiny	NoAstroids	1116	11:22AM on July 04, 2019
+Tiny	NoAstroids	1126	11:22AM on July 04, 2019
+Tiny	NoAstroids	11126	11:24AM on July 04, 2019
+Tiny	NoAstroids	111126	01:53PM on July 04, 2019
+Tiny	NoAstroids	111136	03:53PM on July 04, 2019
+Tiny	NoAstroids	111198	03:56PM on July 04, 2019
+Tiny	NoAstroids	111297	04:00PM on July 04, 2019
+Tiny	NoAstroids	211297	04:13PM on July 04, 2019
+Tiny	NoAstroids	211380	04:20PM on July 04, 2019

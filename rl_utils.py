@@ -33,7 +33,7 @@ def save_logs(statespace, mode, episode):
 
 def track_stats(statespace, mode, episode, reward, blind_fraction):
 	name = "Curves/learning_curve_" + statespace + "_" + mode + '.csv'
-	line = str(episode) + "," + str(reward) + '\t'+ str(blind_fraction) + '\n'
+	line = str(episode) + "," + str(reward) + ','+ str(blind_fraction) + '\n'
 	try:
 		with open(name, "a") as file:
 			file.write(line)
@@ -145,13 +145,20 @@ def update_Qtable(q_table, action, reward, pre_action_state, post_action_state,
 
 	Q_s1_a1 = int(max(action_vals_future))
 
-	Q_s0_a0 = reward + gamma*(Q_s1_a1)
+	Q_s0_a0 = q_table[pre_action_state[0], 
+	pre_action_state[1], pre_action_state[2], 
+	pre_action_state[3], pre_action_state[4], 
+	pre_action_state[5], action]
+	 
+	learned_val = reward + gamma*(Q_s1_a1)
 	
+	update_val = (1-alpha) * Q_s0_a0 + alpha * learned_val
+
 	#Update
 	q_table[pre_action_state[0], 
 	pre_action_state[1], pre_action_state[2], 
 	pre_action_state[3], pre_action_state[4], 
-	pre_action_state[5], action] = Q_s0_a0
+	pre_action_state[5], action] = update_val
 
 	return q_table
 	
