@@ -51,3 +51,10 @@ Tiny	NoAstroids	211390	11:25PM on July 04, 2019
 Tiny	NoAstroids	221390	11:40PM on July 04, 2019
 Tiny	NoAstroids	231390	11:42PM on July 04, 2019
 Tiny	NoAstroids	501390	12:00AM on July 05, 2019
+Tiny	NoAstroids	501400	05:49PM on July 04, 2019
+Tiny	NoAstroids	501500	05:53PM on July 04, 2019
+Tiny	NoAstroids	501600	05:57PM on July 04, 2019
+Tiny	NoAstroids	501700	06:03PM on July 04, 2019
+Tiny	NoAstroids	501710	06:04PM on July 04, 2019
+Tiny	NoAstroids	501718	06:05PM on July 04, 2019
+Tiny	NoAstroids	501792	06:09PM on July 04, 2019
