@@ -320,7 +320,8 @@ def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon
 
 			# Save that Episode's stats
 			if controller == "Agent":
-				print("Episode: ", episode)
+				if episode % 1000 == 0:
+					print("Episode: ", episode)
 				blind_fraction = round(blind_frames/episode_frames, 5)
 				track_stats(statespace, mode, episode, agent_score, blind_fraction)
 
