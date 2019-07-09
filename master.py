@@ -31,12 +31,12 @@ else:
 	session_len = None
 
 
-
-
 # Hyperparameters
-alpha = 0.1
+alpha = 0.7
 gamma = 0.8
 epsilon = 0.1
+
+
 statespace = "Tiny"
 # statespace = "Small"
 # statespace = "Large"
