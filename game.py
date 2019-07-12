@@ -14,10 +14,7 @@ from classes import Agent, Sun, Astroid
 
 def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon, 
 	frame_reward, lap_reward, wall_reward):
-	print("\nHyperParameters:")
-	print(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon, 
-	frame_reward, lap_reward, wall_reward)
-	print()
+
 #__________________________________
 #__________________________________
 # Game Global Variables
@@ -50,17 +47,23 @@ def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon
 
 	# Global Variables for Reinforcement Learning
 	if controller == "Agent":
+		
+		#construct identifying string for hyperparameters
+		hyperstring = "a" + str(alpha) + "_g" + str(gamma) + "_e" + str(epsilon)
+
 		try:
-			q_table = load_Qtable(statespace, mode)
+			q_table = load_Qtable(statespace, mode, hyperstring)
 		except:
 			q_table = init_Qtable(statespace)
 
-		episode = read_logs(statespace, mode)
+		episode = read_logs(statespace, mode, hyperstring)
 		episode_session_start = episode
 
 		# Variables for counting the amount of frames per episode where the agent is acting "blindly"
 		blind_frames = 0
 		episode_frames = 0
+
+		
 
 #__________________________________
 #__________________________________
@@ -107,8 +110,8 @@ def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon
 					if event.type == pygame.QUIT:
 						done = True
 						if controller == "Agent":
-							save_Qtable(q_table, statespace, mode)
-							save_logs(statespace, mode, episode)
+							save_Qtable(q_table, statespace, mode, hyperstring)
+							save_logs(statespace, mode, hyperstring, episode)
 						pygame.quit()
 
 	#__________________________________
@@ -303,8 +306,8 @@ def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon
 					if event.type == pygame.QUIT:
 						done = True
 						if controller == "Agent":
-							save_Qtable(q_table, statespace, mode)
-							save_logs(statespace, mode, episode)
+							save_Qtable(q_table, statespace, mode, hyperstring)
+							save_logs(statespace, mode, hyperstring, episode)
 						pygame.quit()
 
 				# Render window
@@ -323,14 +326,14 @@ def run(controller, screen, session_len, statespace, mode, alpha, gamma, epsilon
 				if episode % 1000 == 0:
 					print("Episode: ", episode)
 				blind_fraction = round(blind_frames/episode_frames, 5)
-				track_stats(statespace, mode, episode, agent_score, blind_fraction)
+				track_stats(statespace, mode, hyperstring, episode, agent_score, blind_fraction)
 
 				# Kill the game if limited training session is done
 				if session_len != None:
 					if episode + 1 - episode_session_start >= session_len:
 						done = True
-						save_Qtable(q_table, statespace, mode)
-						save_logs(statespace, mode, episode)
+						save_Qtable(q_table, statespace, mode, hyperstring)
+						save_logs(statespace, mode, hyperstring, episode)
 
 
 

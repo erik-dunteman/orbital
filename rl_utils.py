@@ -3,7 +3,7 @@ import numpy as np
 import random
 import datetime
 
-def read_logs(statespace, mode):
+def read_logs(statespace, mode, hyperstring):
 	print("Reading Training Logs for Episode Start Point")
 	try:
 		file = open("training_logs.txt", "r")
@@ -14,15 +14,15 @@ def read_logs(statespace, mode):
 	for line in file:
 		line.strip("\n")
 		line_list = line.split("\t")
-		if line_list[0] == statespace and line_list[1] == mode:
-			episode = int(line_list[2]) + 1
+		if line_list[0] == statespace and line_list[1] == mode and line_list[2] == hyperstring:
+			episode = int(line_list[3]) + 1
 	return episode
 	file.close()
 
-def save_logs(statespace, mode, episode):
+def save_logs(statespace, mode, hyperstring, episode):
 	print("Saving Training Logs")
 	timestamp = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-	line = statespace + "\t" + mode + "\t" + str(episode) + "\t" + timestamp + "\n"
+	line = statespace + "\t" + mode + "\t" + hyperstring + "\t" + str(episode) + "\t" + timestamp + "\n"
 	try:
 		with open("training_logs.txt", "a") as file:
 			file.write(line)
@@ -31,8 +31,8 @@ def save_logs(statespace, mode, episode):
 		file.write(line)
 		file.close()
 
-def track_stats(statespace, mode, episode, reward, blind_fraction):
-	name = "Curves/learning_curve_" + statespace + "_" + mode + '.csv'
+def track_stats(statespace, mode, hyperstring, episode, reward, blind_fraction):
+	name = "Curves/" + statespace + "_" + mode + "/" + hyperstring + '.csv'
 	line = str(episode) + "," + str(reward) + ','+ str(blind_fraction) + '\n'
 	try:
 		with open(name, "a") as file:
@@ -226,14 +226,14 @@ def init_Qtable(statespace):
 	return q_table
 
 
-def save_Qtable(q_table, statespace, mode):
+def save_Qtable(q_table, statespace, mode, hyperstring):
 	print("Saving Q Table")
-	file = "Qtables/" + statespace + "_" + mode + ".npy"
+	file = "Qtables/" + statespace + "_" + mode + "/" + hyperstring + ".npy"
 	np.save(file, q_table)
 
-def load_Qtable(statespace, mode):
+def load_Qtable(statespace, mode, hyperstring):
 	print("Loading Q-Table")
-	file = "Qtables/" + statespace + "_" + mode + ".npy"
+	file = "Qtables/" + statespace + "_" + mode + "/" + hyperstring + ".npy"
 	return np.load(file)
 
 

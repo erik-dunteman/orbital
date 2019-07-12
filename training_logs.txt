@@ -1,80 +1,78 @@
 Gen1	Flawed Bellman Equation, slow learning rate
-Tiny	NoAstroids	751	02:23PM on July 02, 2019		
-Tiny	NoAstroids	4501	04:16PM, on July 02, 2019
-Tiny	NoAstroids	7360	06:19PM on July 02, 2019
-Tiny	NoAstroids	7363	06:32PM on July 02, 2019
-Tiny	NoAstroids	7530	06:53PM on July 02, 2019
-Tiny	NoAstroids	7549	06:55PM on July 02, 2019
-Tiny	NoAstroids	7560	06:56PM on July 02, 2019
-Tiny	NoAstroids	11306	08:27PM on July 02, 2019
-Tiny	NoAstroids	11320	10:11PM on July 02, 2019
-Tiny	NoAstroids	15848	02:15AM on July 03, 2019
-Tiny	NoAstroids	15851	12:39PM on July 03, 2019
-Tiny	NoAstroids	15861	01:02PM on July 03, 2019
-Tiny	NoAstroids	15871	01:03PM on July 03, 2019
-Tiny	NoAstroids	15877	01:05PM on July 03, 2019
-Tiny	NoAstroids	15883	01:05PM on July 03, 2019
-Tiny	NoAstroids	15889	01:07PM on July 03, 2019
-Tiny	NoAstroids	15895	01:08PM on July 03, 2019
-Tiny	NoAstroids	15901	01:08PM on July 03, 2019
-Tiny	NoAstroids	15907	01:09PM on July 03, 2019
-Tiny	NoAstroids	15913	01:12PM on July 03, 2019
-Tiny	NoAstroids	15919	01:14PM on July 03, 2019
-Tiny	NoAstroids	15930	01:36PM on July 03, 2019
-Tiny	NoAstroids	15941	01:36PM on July 03, 2019
-Tiny	NoAstroids	15947	01:37PM on July 03, 2019
-Tiny	NoAstroids	15953	01:37PM on July 03, 2019
-Tiny	NoAstroids	15958	01:38PM on July 03, 2019
-Tiny	NoAstroids	15960	01:38PM on July 03, 2019
-Tiny	NoAstroids	15962	01:38PM on July 03, 2019
-Tiny	NoAstroids	25962	01:43PM on July 03, 2019
-Tiny	NoAstroids	35962	01:45PM on July 03, 2019
-Tiny	NoAstroids	135962	01:59PM on July 03, 2019
-Tiny	NoAstroids	135972	10:51PM on July 03, 2019
-Tiny	NoAstroids	135982	10:51PM on July 03, 2019
-Tiny	NoAstroids	1135982	11:28PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	751	02:23PM on July 02, 2019		
+Tiny	NoAstroids	a0.1_g0.8_a0.1	4501	04:16PM, on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	7360	06:19PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	7363	06:32PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	7530	06:53PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	7549	06:55PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	7560	06:56PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	11306	08:27PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	11320	10:11PM on July 02, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15848	02:15AM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15851	12:39PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15861	01:02PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15871	01:03PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15877	01:05PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15883	01:05PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15889	01:07PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15895	01:08PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15901	01:08PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15907	01:09PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15913	01:12PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15919	01:14PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15930	01:36PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15941	01:36PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15947	01:37PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15953	01:37PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15958	01:38PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15960	01:38PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	15962	01:38PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	25962	01:43PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	35962	01:45PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	135962	01:59PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	135972	10:51PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	135982	10:51PM on July 03, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	1135982	11:28PM on July 03, 2019
 _	_	_	_	_	_	_	_	_	_	_	_	_
-Tiny	NoAstroids	0
-Tiny	NoAstroids	100	11:13AM on July 04, 2019
-Tiny	NoAstroids	106	11:17AM on July 04, 2019
-Tiny	NoAstroids	116	11:19AM on July 04, 2019
-Tiny	NoAstroids	1116	11:22AM on July 04, 2019
-Tiny	NoAstroids	1126	11:22AM on July 04, 2019
-Tiny	NoAstroids	11126	11:24AM on July 04, 2019
-Tiny	NoAstroids	111126	01:53PM on July 04, 2019
-Tiny	NoAstroids	111136	03:53PM on July 04, 2019
-Tiny	NoAstroids	111198	03:56PM on July 04, 2019
-Tiny	NoAstroids	111297	04:00PM on July 04, 2019
-Tiny	NoAstroids	211297	04:13PM on July 04, 2019
-Tiny	NoAstroids	211380	04:20PM on July 04, 2019
-Tiny	NoAstroids	211390	11:25PM on July 04, 2019
-Tiny	NoAstroids	221390	11:40PM on July 04, 2019
-Tiny	NoAstroids	231390	11:42PM on July 04, 2019
-Tiny	NoAstroids	501390	12:00AM on July 05, 2019
-Tiny	NoAstroids	501400	05:49PM on July 04, 2019
-Tiny	NoAstroids	501500	05:53PM on July 04, 2019
-Tiny	NoAstroids	501600	05:57PM on July 04, 2019
-Tiny	NoAstroids	501700	06:03PM on July 04, 2019
-Tiny	NoAstroids	501710	06:04PM on July 04, 2019
-Tiny	NoAstroids	501718	06:05PM on July 04, 2019
-Tiny	NoAstroids	501792	06:09PM on July 04, 2019
-Tiny	NoAstroids	511792	01:16AM on July 05, 2019
-Tiny	NoAstroids	1511792	02:24AM on July 05, 2019
-Tiny	NoAstroids	5011792	07:49AM on July 05, 2019
-<<<<<<< HEAD
-Tiny	NoAstroids	5011798	03:12PM on July 05, 2019
-Tiny	NoAstroids	5011799	03:17PM on July 05, 2019
-Tiny	NoAstroids	5011809	03:19PM on July 05, 2019
-Tiny	NoAstroids	5011814	03:19PM on July 05, 2019
-Tiny	NoAstroids	5011914	10:25AM on July 06, 2019
-Tiny	NoAstroids	5012014	11:41AM on July 08, 2019
-Tiny	NoAstroids	5012114	11:46AM on July 08, 2019
-Tiny	NoAstroids	5012150	11:47AM on July 08, 2019
-Tiny	NoAstroids	5012167	07:53PM on July 08, 2019
-_	_	_	_	_	_	_	_	_	_	_	_	_
-Tiny	NoAstroids	0	08:01PM on July 08, 2019
-Tiny	NoAstroids	3	08:03PM on July 08, 2019
-=======
-Tiny	NoAstroids	5011802	06:46AM on July 06, 2019
-Tiny	NoAstroids	50011802	07:40AM on July 08, 2019
->>>>>>> 5dba3ec06b4413bf8adbbb17d03e8abafb2a8926
+Tiny	NoAstroids	a0.1_g0.8_a0.1	0
+Tiny	NoAstroids	a0.1_g0.8_a0.1	100	11:13AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	106	11:17AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	116	11:19AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	1116	11:22AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	1126	11:22AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	11126	11:24AM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	111126	01:53PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	111136	03:53PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	111198	03:56PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	111297	04:00PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	211297	04:13PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	211380	04:20PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	211390	11:25PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	221390	11:40PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	231390	11:42PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501390	12:00AM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501400	05:49PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501500	05:53PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501600	05:57PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501700	06:03PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501710	06:04PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501718	06:05PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	501792	06:09PM on July 04, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	511792	01:16AM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	1511792	02:24AM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011792	07:49AM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011798	03:12PM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011799	03:17PM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011809	03:19PM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011814	03:19PM on July 05, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5011914	10:25AM on July 06, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5012014	11:41AM on July 08, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5012114	11:46AM on July 08, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5012150	11:47AM on July 08, 2019
+Tiny	NoAstroids	a0.1_g0.8_a0.1	5012167	07:53PM on July 08, 2019
+Tiny	NoAstroids	a0.1_g0.8_e0.2	10	05:03PM on July 09, 2019
+Tiny	NoAstroids	a0.1_g1.0_e0.2	10	05:05PM on July 09, 2019
+Tiny	NoAstroids	a0.1_g1.0_e0.2	13	05:07PM on July 09, 2019
+Tiny	NoAstroids	a0.9_g1.0_e0.2	10	05:08PM on July 09, 2019
+Tiny	NoAstroids	a0.9_g1.0_e0.2	20	05:09PM on July 09, 2019
+Tiny	NoAstroids	a0.1_g1.0_e0.2	25	10:23AM on July 11, 2019
